@@ -1,9 +1,7 @@
 package com.kk.SpringMVCproject.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,13 +17,22 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String name;
     private String description;
     private String category;
     private String brand;
     private BigDecimal price;
+    @JsonFormat(shape =  JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date releaseDate;
     private boolean productAvailable;
-    private int quantity;
+    @Column(name = "stockQuantity")
+    private Integer stockQuantity;
+    private String ImageName;
+    private String ImageType;
+    @Lob
+    private byte[] imageData;
+
+
+
 }
