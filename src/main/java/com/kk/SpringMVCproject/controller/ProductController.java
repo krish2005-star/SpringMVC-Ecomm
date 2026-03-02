@@ -57,6 +57,35 @@ public class ProductController {
         } catch (IOException e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
+
+    @PutMapping("/product/{id}")
+    public ResponseEntity<String> updateProduct(@PathVariable int id,@RequestPart Product product, @RequestPart MultipartFile imageFile){
+        Product updatedProduct = null;
+        try {
+            updatedProduct = productService.updateProduct(product,imageFile);
+            return new ResponseEntity<>("updated",HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<String> deleteProductById(@PathVariable int id){
+        Product product = productService.getProductById(id);
+        if( product != null){
+            productService.deleteProduct(id);
+            return new ResponseEntity<>("Deleted",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Product not found",HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/products/search")
+    public ResponseEntity<List<Product>> searchProduct(@RequestParam String keyword){
+        List<Product> products = productService.searchProduct(keyword);
+        return new ResponseEntity<>(products,HttpStatus.OK);
+    }
+
 }
